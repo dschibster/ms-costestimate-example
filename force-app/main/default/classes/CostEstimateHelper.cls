@@ -63,6 +63,7 @@ public class CostEstimateHelper{
             for(SObject sobj : newSObjects){
                 for(String subject : subjects){
                     Task startingTask = new Task(Subject = subject, Status = 'Open', WhatId = String.valueOf(sobj.get('Id')), ActivityDate = Date.today().addDays(3));
+                    //This here is completely optional! I only added it for completeness' sake.
                     if(doesFieldExist(sobjType.getDescribe().getName(), 'OwnerId')){
                         startingTask.OwnerId = String.valueOf(sobj.get('OwnerId'));
                     }
