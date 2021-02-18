@@ -27,6 +27,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>DefaultTaskSettings__mdt.SObjectName__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>DefaultTaskSettings__mdt.TaskSubjects__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.AccountId</field>
         <readable>true</readable>
@@ -93,6 +103,9 @@
     </fieldPermissions>
     <layoutAssignments>
         <layout>CostEstimate__c-Cost Estimate Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>DefaultTaskSettings__mdt-Default Task Setting Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-Opportunity %28Support%29 Layout</layout>
