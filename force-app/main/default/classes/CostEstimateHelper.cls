@@ -67,6 +67,7 @@ public class CostEstimateHelper{
                     if(doesFieldExist(sobjType.getDescribe().getName(), 'OwnerId')){
                         startingTask.OwnerId = String.valueOf(sobj.get('OwnerId'));
                     }
+                    newTasksToInsert.add(startingTask);
                 }
             }
             if(!newTasksToInsert.isEmpty()){
