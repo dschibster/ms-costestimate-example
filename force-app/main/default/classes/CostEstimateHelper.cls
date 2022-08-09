@@ -107,6 +107,10 @@ public class CostEstimateHelper {
 
         DefaultTaskSettings__mdt setting;
         try {
+            //this query would by now be obsolete if we do two things
+            //1. increase api verrsion of this class
+            //2. use DefaultTaskSettings__mdt.getInstance(xxx);
+            //3. make sure that all metadatas are named AFTER their sobject type
             setting = [
                 SELECT TaskSubjects__c
                 FROM DefaultTaskSettings__mdt
