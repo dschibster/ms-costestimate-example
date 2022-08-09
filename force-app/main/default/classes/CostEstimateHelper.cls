@@ -23,6 +23,12 @@ public class CostEstimateHelper {
                     ActivityDate = (dueDate != null ? dueDate : System.today().addDays(1))
                 )
             );
+            /**
+             * if (dueDate != null
+             *  return dueDate
+             * else
+             *  return System.today().addDays(1)
+             */
         }
         return newTasks;
     }
@@ -37,6 +43,24 @@ public class CostEstimateHelper {
             FROM CostEstimate__c
             WHERE Id IN :costEstimateIds
         ];
+        List<Opportunity> fff = [
+            SELECT id, costestimate__c, stagename, amount
+            FROM Opportunity
+            WHERE CostEstimate__c IN :costestimateIDS
+        ];
+        /**
+         * estimate1.opportunities__r
+         *  opp1
+         *  opp2
+         *  opp3
+         *  opp4
+         * estimate2.Opportunites__r
+         *  opp5
+         *  opp6
+         *  opp7 ...
+         */
+        Map<Id, Decimal> mapOppIdToSumAllOpps = new Map<Id, Decimal>();
+        Map<Id, Decimal> mappOppIdToSumWonOpps = new Map<Id, Decimal>();
         for (CostEstimate__c est : estimates) {
             est.SumAllOpps__c = 0;
             est.SumWonOpps__c = 0;
@@ -48,20 +72,28 @@ public class CostEstimateHelper {
         update estimates;
     }
 
-    public void compareEstimates(List<Opportunity> opportunities) {
-        Set<Id> costEstimateIds = new Set<Id>();
-        for (Opportunity opp : opportunities) {
-            costEstimateIds.add(opp.CostEstimate__c);
-        }
+    public void compareEstimates(List<CostEstimate__c> costEstimates) {
+        //möglicherweise unnötig je nachdem wo wir das ausführen.
         List<CostEstimate__c> estimates = [
-            SELECT Id, SumAllOpps__c, FalseEstimate__c, (SELECT Id, Amount, StageName FROM Opportunities__r)
+            SELECT Id, Estimate__c, SumAllOpps__c, FalseEstimate__c
             FROM CostEstimate__c
-            WHERE Id IN :costEstimateIds AND FalseEstimate__c = FALSE
+            WHERE Id IN :costEstimates
         ];
         List<CostEstimate__c> costEstimatesToUpdate = new List<CostEstimate__c>();
         for (CostEstimate__c est : estimates) {
-            if (((est.Estimate__c / est.SumAllOpps__c) > 1.3 || (est.Estimate__c / est.SumAllOpps__c) < 0.7)) {
+            if (
+                !est.FalseEstime__c &&
+                ((est.Estimate__c / est.SumAllOpps__c) > 1.3 ||
+                (est.Estimate__c / est.SumAllOpps__c) < 0.7)
+            ) {
                 est.FalseEstimate__c = true;
+                costEstimatesToUpdate.add(est);
+            } else if (
+                est.FalseEstimate__c &&
+                (est.Estimate__c / est.SumAllOpps__c) <= 1.3 &&
+                (est.Estimate__c / est.SumAllOpps__c) >= 0.7
+            ) {
+                est.FalseEstimate__c = false;
                 costEstimatesToUpdate.add(est);
             }
         }
