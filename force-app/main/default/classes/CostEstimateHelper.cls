@@ -82,7 +82,7 @@ public class CostEstimateHelper {
         List<CostEstimate__c> costEstimatesToUpdate = new List<CostEstimate__c>();
         for (CostEstimate__c est : estimates) {
             if (
-                !est.FalseEstime__c &&
+                !est.FalseEstimate__c &&
                 ((est.Estimate__c / est.SumAllOpps__c) > 1.3 ||
                 (est.Estimate__c / est.SumAllOpps__c) < 0.7)
             ) {
