@@ -125,7 +125,7 @@ public class CostEstimateHelper {
                     Task startingTask = new Task(
                         Subject = subject,
                         Status = 'Open',
-                        WhatId = String.valueOf(sobj.get('Id')),
+                        WhatId = sobj.Id,
                         ActivityDate = Date.today().addDays(3)
                     );
                     //This here is completely optional! I only added it for completeness' sake.
