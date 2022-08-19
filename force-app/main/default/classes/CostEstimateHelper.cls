@@ -80,18 +80,22 @@ public class CostEstimateHelper {
     public void compareEstimates(List<CostEstimate__c> costEstimates) {
         List<CostEstimate__c> costEstimatesToUpdate = new List<CostEstimate__c>();
         for (CostEstimate__c est : costEstimates) {
-            if (
-                !est.FalseEstimate__c &&
-                ((est.Estimate__c / est.SumAllOpps__c) > 1.3 ||
-                (est.Estimate__c / est.SumAllOpps__c) < 0.7)
-            ) {
-                est.FalseEstimate__c = true;
-            } else if (
-                est.FalseEstimate__c &&
-                (est.Estimate__c / est.SumAllOpps__c) <= 1.3 &&
-                (est.Estimate__c / est.SumAllOpps__c) >= 0.7
-            ) {
-                est.FalseEstimate__c = false;
+            try {
+                if (
+                    !est.FalseEstimate__c &&
+                    ((est.Estimate__c / est.SumAllOpps__c) > 1.3 ||
+                    (est.Estimate__c / est.SumAllOpps__c) < 0.7)
+                ) {
+                    est.FalseEstimate__c = true;
+                } else if (
+                    est.FalseEstimate__c &&
+                    (est.Estimate__c / est.SumAllOpps__c) <= 1.3 &&
+                    (est.Estimate__c / est.SumAllOpps__c) >= 0.7
+                ) {
+                    est.FalseEstimate__c = false;
+                }
+            } catch (Exception e) {
+                //Safety measure to ensure we don't run into DIVIDED BY 0 exceptions.
             }
         }
     }
